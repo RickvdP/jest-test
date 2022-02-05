@@ -41,7 +41,7 @@
   },
   "scripts": {
     "dev": "serverless offline",
-    "test": "jest",
+    "test": "jest --coverage",
     "test:report": "jest --ci --reporters=default --testResultsProcessor=jest-junit",
     "test:watch": "jest --watch --verbose --detectOpenHandles",
     "linter": "eslint ./src",
