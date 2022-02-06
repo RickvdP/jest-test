@@ -13,6 +13,8 @@ const mockedAdministrationModel = AdministrationModel as jest.MockedClass<
 >;
 
 beforeEach(() => {
+  // * Uncomment below line to clear all jest mock before running test
+  // jest.clearAllMocks();
   mockedAdministrationModel.mockClear();
 });
 
@@ -30,6 +32,7 @@ it('should call AdministrationModels constructor when the request is made throug
   };
   const mockedGetByIdMethod = jest
     .spyOn(AdministrationModel.prototype, 'getById')
+    .mockClear()
     .mockImplementationOnce(async (id: string) => administrationObj);
   const res = await request(app).get(`/administrations/${administrationObj.id}/invoices`);
   expect(mockedGetByIdMethod).toHaveBeenCalledTimes(1);
@@ -39,11 +42,13 @@ it('should call AdministrationModels constructor when the request is made throug
 });
 
 it('should return error when administration not found with given id', async () => {
-  jest
+  const mockedGetByIdMethod = jest
     .spyOn(AdministrationModel.prototype, 'getById')
+    .mockClear()
     .mockImplementationOnce(async (id: string) => undefined);
 
   const res = await request(app).get('/administrations/123/invoices');
+  expect(mockedGetByIdMethod).toHaveBeenCalledTimes(1);
   expect(res.status).toEqual(HttpStatus.NOT_FOUND);
   expect(res.body).toMatchObject({
     statusCode: 404,
